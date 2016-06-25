@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
   },
+  errorMessage: {
+    color: 'red',
+  },
 });
 
 class SignIn extends React.Component {
@@ -35,19 +38,21 @@ class SignIn extends React.Component {
     this.state = {
       username: '',
       password: '',
+      errorMessage: '',
     };
     this.onPress = this.onPress.bind(this);
   }
+
   componentWillMount() {
     const appId = '60K8DVdGi8X9JS23P7cmkmNz-gzGzoHsz';
     const appKey = 'MFAyo235oVtSAKCksNGERQDs';
     AV.init({ appId, appKey });
   }
+
   onPress() {
-    console.log(this.state);
-    this.setState({
-      password: '',
-    });
+    AV.User.logIn(this.state.username, this.state.password)
+    .then((user) => { console.log(user); },
+      (error) => { this.setState({ errorMessage: error.message }); });
   }
   render() {
     return (
@@ -70,6 +75,8 @@ class SignIn extends React.Component {
         />
 
         <Button text={'Sign In'} onPress={this.onPress} />
+
+        <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
       </View>
     );
   }
