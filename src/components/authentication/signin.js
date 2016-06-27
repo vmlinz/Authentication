@@ -44,15 +44,10 @@ class SignIn extends React.Component {
     this.onPressSignUp = this.onPressSignUp.bind(this);
   }
 
-  componentWillMount() {
-    const appId = '60K8DVdGi8X9JS23P7cmkmNz-gzGzoHsz';
-    const appKey = 'MFAyo235oVtSAKCksNGERQDs';
-    AV.init({ appId, appKey });
-  }
-
   onPress() {
+    const navigator = this.props.navigator;
     AV.User.logIn(this.state.username, this.state.password)
-    .then((user) => { console.log(user); },
+    .then(() => { navigator.resetTo({ name: 'tweets' }); },
       (error) => { this.setState({ errorMessage: error.message }); });
   }
 

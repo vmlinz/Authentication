@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {
   View,
@@ -5,9 +6,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
-
 import Button from '../common/button';
-
 import AV from 'avoscloud-sdk';
 
 const styles = StyleSheet.create({
@@ -59,8 +58,12 @@ class SignUp extends React.Component {
       user.setPassword(password);
       user.setEmail(`${username}@test.com`);
       try {
+        // async wait user signup and log in
         user = await user.signUp();
-        console.log(user);
+        // get navigator
+        const navigator = this.props.navigator;
+        // navigate to 'tweets' and reset the stack
+        navigator.resetTo({ name: 'tweets' });
       } catch (error) {
         this.setState({ errorMessage: error.message });
       }
