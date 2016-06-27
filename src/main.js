@@ -1,11 +1,15 @@
 import React from 'react';
-
 import {
   StyleSheet,
-  View,
+  Navigator,
 } from 'react-native';
+import SignIn from './components/authentication/signin';
+import SignUp from './components/authentication/signup';
 
-import Signin from './components/authentication/signin';
+const routes = {
+  signin: SignIn,
+  signup: SignUp,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -16,10 +20,19 @@ const styles = StyleSheet.create({
   },
 });
 
+function renderScene(route, navigator) {
+  let Component = routes[route.name];
+  return <Component route={route} navigator={navigator} />;
+}
+
 function Main() {
-  return (<View style={styles.container}>
-    <Signin />
-  </View>);
+  return (
+    <Navigator
+      sceneStyle={styles.container}
+      initialRoute={{ name: 'signin' }}
+      renderScene={renderScene}
+    />
+  );
 }
 
 export default Main;

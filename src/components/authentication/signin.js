@@ -41,6 +41,7 @@ class SignIn extends React.Component {
       errorMessage: '',
     };
     this.onPress = this.onPress.bind(this);
+    this.onPressSignUp = this.onPressSignUp.bind(this);
   }
 
   componentWillMount() {
@@ -54,6 +55,12 @@ class SignIn extends React.Component {
     .then((user) => { console.log(user); },
       (error) => { this.setState({ errorMessage: error.message }); });
   }
+
+  onPressSignUp() {
+    const navigator = this.props.navigator;
+    navigator.push({ name: 'signup' });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -74,12 +81,17 @@ class SignIn extends React.Component {
           onChangeText={(text) => this.setState({ password: text })}
         />
 
+        <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
         <Button text={'Sign In'} onPress={this.onPress} />
 
-        <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
+        <Button text={'Register a new account'} onPress={this.onPressSignUp} />
       </View>
     );
   }
 }
+
+SignIn.propTypes = {
+  navigator: React.PropTypes.object.isRequired,
+};
 
 export default SignIn;
